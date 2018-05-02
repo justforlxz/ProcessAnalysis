@@ -50,8 +50,8 @@ void ReadProcessInfo::onTimeOut()
                         pids << f;
                         QJsonObject obj;
                         obj["pid"] = p->pid;
-                        obj["x"] = p->process_name;
                         obj["low"] = p->m_time.currentMSecsSinceEpoch();
+                        obj["x"] = QString("start: %1, end: %2, name: %3").arg(p->m_time.toString("hh:mm:ss")).arg("").arg(p->process_name);
                         m_jsonObj[f] = obj;
                     }
 
@@ -74,6 +74,7 @@ void ReadProcessInfo::onTimeOut()
         // 更新所有的进程退出时间
         QJsonObject obj = m_jsonObj[pid].toObject();
         obj["high"] = QDateTime::currentDateTime().currentMSecsSinceEpoch();
+        obj["x"] = QString("start: %1, end: %2, name: %3").arg((*it)->m_time.toString("hh:mm:ss")).arg(QDateTime::currentDateTime().toString("hh::mm::ss")).arg((*it)->process_name);
         m_jsonObj[pid] = obj;
         m_jsonArray << obj;
 
